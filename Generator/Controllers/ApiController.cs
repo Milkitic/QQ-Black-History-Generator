@@ -16,30 +16,44 @@ namespace Generator2.Controllers
         [HttpPost]
         public ActionResult GetImage(string nick, string message, HttpPostedFileBase ava)
         {
-            if (nick == null || message == null)
+            try
             {
-                nick = "【Easy】gust@北京";
-                message = "想摸女孩子";
+                if (nick == null || message == null)
+                {
+                    nick = "【Easy】gust@北京";
+                    message = "想摸女孩子";
+                }
+                PicGenerator gn = new PicGenerator();
+                Image ava_img = null;
+
+                string path = Server.MapPath("upload");
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                string fullName = "";
+                if (ava == null)
+                    ava_img = Image.FromFile(Path.Combine(path, "ava.jpg"));
+                else
+                {
+                    var fileName = Session.SessionID + "-" + ava.FileName;
+                    var filePath = path;
+                    fullName = Path.Combine(filePath, fileName);
+                    ava.SaveAs(fullName);
+                    ava_img = Image.FromFile(fullName);
+                }
+                byte[] stream = gn.GetImage(Server.MapPath("content"), nick, message, ava_img).ToArray();
+                //if (fullName != "")
+                //{
+                //    System.IO.File.Delete(fullName);
+                //}
+
+                return File(stream, "image/png");
             }
-            PicGenerator gn = new PicGenerator();
-            Image ava_img = null;
 
-            string path = Server.MapPath("content");
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
-
-            if (ava == null)
-                ava_img = Image.FromFile(Path.Combine(path, "ava.jpg"));
-            else
+            catch (Exception ex)
             {
-                var fileName = Session.SessionID + "-" + ava.FileName;
-                var filePath = path;
-                var fullName = Path.Combine(filePath, fileName);
-                ava.SaveAs(fullName);
-                ava_img = Image.FromFile(fullName);
+                ViewData["ex"] = ex.ToString();
+                return View("error");
             }
-            return File(gn.GetImage(Server.MapPath("content"), nick, message, ava_img).ToArray(), "image/png");
-
         }
     }
 }

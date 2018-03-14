@@ -25,8 +25,8 @@ namespace Generator.Function
             float offset_width = (141 - width) * 0.055f;
             g.Dispose();
             bmp.Dispose();
-
-            bmp = new Bitmap((width > width_tmp ? width + 30 : width_tmp) + panel_left, height);
+            int true_width = (width > width_tmp ? width + 30 : width_tmp) + panel_left;
+            bmp = new Bitmap(true_width < 100 ? 100 : true_width, height);
             g = Graphics.FromImage(bmp);
             Debug.WriteLine(Environment.CurrentDirectory);
             Image img_left = Image.FromFile(Path.Combine(path, "left.png"));
