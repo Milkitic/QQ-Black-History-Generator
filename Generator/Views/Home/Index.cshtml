@@ -7,9 +7,50 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/css")
     <title>View</title>
 </head>
 <body>
-    <img src="/Home/GetImage" width="100" alt="" />
+    <div class="container body-content" >
+        <div class="center">
+            <form action="/api/getimage" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="nick">昵称</label>
+                    <input type="text" class="form-control" style="width:300px" name="nick" placeholder="完整群名片/备注" />
+                </div>
+                <div class="form-group">
+                    <label for="message">消息</label>
+                    <input type="text" class="form-control" style="width:300px" name="message" placeholder="你想让他说…" />
+                </div>
+                <div class="form-group">
+                    <label for="inputfile">头像上传</label>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <input type="text" class="form-control" style="width:213px;border-radius:4px 0px 0px 4px" id="customFile" name="customFile" placeholder="支持jpg / gif / png" disabled="disabled">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" style="border-radius:0px 4px 4px 0px" type="button" onclick="document.getElementById('ava').click()">
+                                        浏览...
+                                    </button>
+                                </span>
+                                <input type="file" accept="image/png,image/gif,image/jpeg" style="position:absolute;top: 0;display:none;" name="ava" id="ava" />
+
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-default">提交</button>
+                </div>
+            </form>
+        </div>
+        <img src="/api/getimage?nick=sb&message=niubi" alt="" />
+    </div>
+    <script type="text/javascript">
+        document.getElementById("ava").onchange = function () {
+            document.getElementById("customFile").value = document.getElementById("ava").value;
+        }
+    </script>
 </body>
 </html>
