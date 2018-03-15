@@ -21,7 +21,7 @@ namespace Generator2.Controllers
                 if (nick == null || message == null)
                 {
                     nick = "【Easy】gust@北京";
-                    message = "想摸女孩子";
+                    message = "想摸男孩子";
                 }
                 PicGenerator gn = new PicGenerator();
                 Image ava_img = null;
@@ -40,7 +40,7 @@ namespace Generator2.Controllers
                     ava.SaveAs(fullName);
                     ava_img = Image.FromFile(fullName);
                 }
-                byte[] stream = gn.GetImage(Server.MapPath("content"), nick, message, ava_img).ToArray();
+                byte[] stream = gn.GetImage(Session.SessionID, Server.MapPath("content"), nick, message, ava_img).ToArray();
                 //if (fullName != "")
                 //{
                 //    System.IO.File.Delete(fullName);

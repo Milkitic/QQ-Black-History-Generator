@@ -11,7 +11,7 @@
     <title>View</title>
 </head>
 <body>
-    <div class="container body-content" >
+    <div class="container body-content">
         <div class="center">
             <form action="/api/getimage" method="post" enctype="multipart/form-data">
                 <div class="form-group">
@@ -45,7 +45,21 @@
                 </div>
             </form>
         </div>
-        <img src="/api/getimage?nick=sb&message=niubi" alt="" />
+        <h3>瞧瞧你们都做了些什么？</h3>
+        @if (((string[])ViewData["roots"])[0] != "")
+        {
+            <p>@Html.ActionLink("换一批", "index")</p>
+        }
+        <blockquote class="text-center" style="padding:10px;">
+            @foreach (string root in (string[])ViewData["roots"])
+            {
+                if (root != "")
+                {
+                    <img src="~/api/content/handled/@root" alt="@root" style="margin:10px;" />
+                }
+            }
+        </blockquote>
+
     </div>
     <script type="text/javascript">
         document.getElementById("ava").onchange = function () {

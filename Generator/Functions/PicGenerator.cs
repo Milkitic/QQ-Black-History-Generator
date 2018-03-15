@@ -12,10 +12,12 @@ namespace Generator.Function
 {
     public class PicGenerator
     {
-        public MemoryStream GetImage(string path, string nick, string message, Image avatar = null)
+        public MemoryStream GetImage(string sessionId, string path, string nick, string message, Image avatar = null)
         {
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
+            if (!Directory.Exists(Path.Combine(path, "Handled")))
+                Directory.CreateDirectory(Path.Combine(path, "Handled"));
             int panel_left = 40;
             int width, height = 70, font_size = 10;
             Bitmap bmp = new Bitmap(100, height);
@@ -58,6 +60,7 @@ namespace Generator.Function
 
             MemoryStream ms = new MemoryStream();
             bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+            bmp.Save(Path.Combine(path, "Handled", sessionId + ".png"), System.Drawing.Imaging.ImageFormat.Png);
             g.Dispose();
             bmp.Dispose();
             return ms;
